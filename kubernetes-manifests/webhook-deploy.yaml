@@ -15,19 +15,25 @@ spec:
         app: validate
     spec:
       containers:
-      - name: webhook
-        image: kmitevski/webhook:gunicorn
-        ports:
-        - containerPort: 443
-        env:
-        - name: LABEL
-          value: development
-        volumeMounts:
-        - name: certs-volume
-          readOnly: true
-          mountPath: "/certs"
-        imagePullPolicy: Always
+        - name: webhook
+          image: quay.io/vrutkovs/hook@sha256:7563635acb512507583837f993381d142845f264d69f847fa179bec7d06e0fcd
+          ports:
+            - containerPort: 9443
+          env:
+            - name: LABEL
+              value: development
+          volumeMounts:
+            - name: tls-certificates
+              readOnly: true
+              mountPath: "/certs"
+          imagePullPolicy: Always
       volumes:
-      - name: certs-volume
-        secret:
-          secretName: admission-tls
+        - name: tls-certificates
+          secret:
+            defaultMode: 420
+            items:
+              - key: tls.crt
+                path: tls.crt
+              - key: tls.key
+                path: tls.key
+            secretName: webhook-tls

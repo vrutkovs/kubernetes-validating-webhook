@@ -2,8 +2,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: validate
+  annotations:
+    service.beta.openshift.io/serving-cert-secret-name: webhook-tls
 spec:
   selector:
     app: validate
   ports:
-  - port: 443
+    - port: 9443
