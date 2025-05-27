@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: validation-webhook
+  namespace: custom-webhook
   labels:
     app: validate
 spec:
